@@ -1,98 +1,84 @@
-var $currentDay = $("#currentDay");
-var $timeBlocks = $(".time-block");
-var $scheduleArea = $(".schedule");
+// Time Variables
+var timeBlock = $(".hour");
+var now = parseInt(moment().format("H"));
 
-var toDoItems = [];
 
-var currentDate = moment().format("dddd, MMMM Do");
-var currentHour = moment().format("H");
-
-//Object array
-function initializeSchedule(){
-    // console.log(toDoItems);
-
-//Time block function
-$timeBlocks.each(function(){
-    var $thisBlock = $(this);
-    var $thisBlockHr = parseInt($thisBlock.attr("data-hour"));
-
-    var todoObj = {
-        hour: $thisBlockHr,
-        text: "",
-    }
-    toDoItems.push(todoObj);
-});
+// Day Variables
+var currentTime = moment().format("MMMM Do YYYY");
+$("#currentDate").text(currentTime);
 
 //Saving array to local storage
-localStorage.setItem("todos", JSON.stringify(toDoItems));
-//console.log(toDoItems);
-}
-
-//Formatting timeblock colors
-function setUpTimeBlocks(){
-    $timeBlocks.each(function(){
-        var $thisBlock = $(this);
-        var $thisBlockHr = parseInt($thisBlock.attr("data-hour"));
-
-        if ($thisBlockHr == currentHour){
-            $thisBlock.addClass("present").removeClass("past future");
-        }
-        if($thisBlockHr < currentHour) {
-            $thisBlock.addClass("past").removeClass("present future");
-        }
-        if ($thisBlockHr > currentHour) {
-            $thisBlock.addClass("future").removeClass("past present");
-        }
-});
-}
-
-function renderSchedule(){
-
-    toDoItems = localStorage.getItem("todos");
-    toDoItems = JSON.parse(toDoItems);
-
-    for (var i = 0; i < toDoItems.length; i++){
-        var itemHour = toDoItems[i].hour;
-        var itemText = toDoItems[i].text;
-
-        $("[data-hour=" + itemHour + "]").children("textarea").val(itemText);
-    }
-
-    console.log(toDoItems);
-}
-
-function saveHandler(){
-    var $thisBlock = $(this).parent();
-  
-    var hourToUpdate = $(this).parent().attr("data-hour");
-    var itemToAdd = (($(this).parent()).children("textarea")).val();
-  
-    //see which item we need to update based on the hour of the button clicked matching
-    for (var j = 0; j < toDoItems.length; j++){
-      if (toDoItems[j].hour == hourToUpdate){
-     
-        toDoItems[j].text = itemToAdd;
-      }
-    }
-    localStorage.setItem("todos", JSON.stringify(toDoItems));
-    renderSchedule();
-  }
-  
-  // when the document loads
-  $(document).ready(function(){
-  
-
-    setUpTimeBlocks();
-    if(!localStorage.getItem("todos")){
-     
-      initializeSchedule();
-    } 
-  
-    
-    $currentDay.text(currentDate);
-  
-
-    renderSchedule();
-    $scheduleArea.on("click", "button", saveHandler);
-    
+$(".saveBtn").on("click", function (event) {
+    var calendarItem =
+      event.target.parentElement.previousElementSibling.children[0].value;
+    localStorage.setItem(event.target.attributes[0].value, calendarItem);
   });
+  
+  $(document).ready(function () {
+    if (localStorage["9am"] !== null && localStorage["9am"] !== undefined) {
+      var nineAm = $("<p>" + localStorage["9am"] + "</p>");
+      $("#nineAm").append(nineAm[0].innerText);
+    } else {
+      ("");
+    }
+    if (localStorage["10am"] !== null && localStorage["10am"] !== undefined) {
+      var tenAm = $("<p>" + localStorage["10am"] + "</p>");
+      $("#tenAm").append(tenAm[0].innerText);
+    } else {
+      ("");
+    }
+    if (localStorage["11am"] !== null && localStorage["11am"] !== undefined) {
+      var elevenAm = $("<p>" + localStorage["11am"] + "</p>");
+      $("#elevenAm").append(elevenAm[0].innerText);
+    } else {
+      ("");
+    }
+    if (localStorage["12pm"] !== null && localStorage["12pm"] !== undefined) {
+      var twelvePm = $("<p>" + localStorage["12pm"] + "</p>");
+      $("#twelvePm").append(twelvePm[0].innerText);
+    } else {
+      ("");
+    }
+    if (localStorage["1pm"] !== null && localStorage["1pm"] !== undefined) {
+      var onePm = $("<p>" + localStorage["1pm"] + "</p>");
+      $("#onePm").append(onePm[0].innerText);
+    } else {
+      ("");
+    }
+    if (localStorage["2pm"] !== null && localStorage["2pm"] !== undefined) {
+      var twoPm = $("<p>" + localStorage["2pm"] + "</p>");
+      $("#twoPm").append(twoPm[0].innerText);
+    } else {
+      ("");
+    }
+    if (localStorage["3pm"] !== null && localStorage["3pm"] !== undefined) {
+      var threePm = $("<p>" + localStorage["3pm"] + "</p>");
+      $("#threePm").append(threePm[0].innerText);
+    } else {
+      ("");
+    }
+    if (localStorage["4pm"] !== null && localStorage["4pm"] !== undefined) {
+      var fourPm = $("<p>" + localStorage["4pm"] + "</p>");
+      $("#fourPm").append(fourPm[0].innerText);
+    } else {
+      ("");
+    }
+    if (localStorage["5pm"] !== null && localStorage["5pm"] !== undefined) {
+      var fivePm = $("<p>" + localStorage["5pm"] + "</p>");
+      $("#fivePm").append(fivePm[0].innerText);
+    } else {
+      ("");
+    }
+  });
+//Formatting timeblock colors
+$.each(timeBlock, function (i, hour) {
+    var hourId = parseInt($(this).attr("id"));
+    if (hourId === now) {
+      $(this).next().addClass("present");
+    } else if (hourId < now) {
+      $(this).next().addClass("past");
+    } else if (hourId > now) {
+      $(this).next().addClass("future");
+    }
+  });
+  

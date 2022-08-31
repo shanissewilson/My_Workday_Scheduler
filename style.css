@@ -46,6 +46,10 @@ textarea{
   border-top: 1px dashed #000000;
 }
 
+.time-slot {
+  border: 1px solid white;
+}
+
 .past {
   background-color: lightskyblue;
   color: white;
